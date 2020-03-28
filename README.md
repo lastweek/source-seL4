@@ -1,70 +1,35 @@
-<!--
-     Copyright 2014, General Dynamics C4 Systems
+# Notes
 
-     SPDX-License-Identifier: GPL-2.0-only
--->
+Updated: Mar 28, 2020
 
-The seL4 Repository
-===================
+Well. I came across the seL4 repo while reading a VEE'20 paper.
+Haven't really looked into any of the L4 series kernels, first time.
 
-This repository contains the source code of seL4 microkernel.
+The repo seems really small, I spent ~20min went though the repo, took a brief read of some files. This is just the kernel part of the seL4 project. Most of the userspace stuff are in other repos.
 
-For details about the seL4 microkernel, including details about its formal
-correctness proof, please see the [`sel4.systems`][1] website and associated
-[FAQ][2].
+1. I like the `gdb-macros`, seems a very useful one. Especially if we are running stuff with QEMU. We can setup a bridge.
+2. It supports arm, riscv, and x86. All arc-dependent part is really lean. Some basic stuff down there.
+     - In terms of Verification, how seL4 prove it can safely run on top of so many machine platforms? There exist some machine quicks that need workarounds. Linux itself has some of those.
+3. Function names are too long
+4. why there are only `serial` and `timer` in drivers?
+5. Code is simple, I suppose. I'm getting interested in how they do formal verification!
 
-DOIs for citing recent releases of this repository:
-  * [![DOI][4]](https://doi.org/10.5281/zenodo.591727)
+It's a microkernel, so most of the stuff runs in userspace.
 
-We welcome contributions to seL4. Please see the website for information
-on [how to contribute][3].
+Doc:
+    - https://docs.sel4.systems/projects/user_libs/.
+    - https://docs.sel4.systems/UserlandComponents
+Code:
+    - https://github.com/seL4/util_libs
+    - https://github.com/seL4/seL4_libs
 
-This repository is usually not used in isolation, but as part of the build
-system in a larger project.
-
-  [1]: http://sel4.systems/
-  [2]: http://sel4.systems/Info/FAQ/
-  [3]: http://sel4.systems/Community/Contributing/
-  [4]: https://zenodo.org/badge/DOI/10.5281/zenodo.591727.svg
-  [5]: https://sel4.systems/Info/Docs/seL4-manual-latest.pdf
-  [6]: http://sel4.systems/Info/GettingStarted/
-
-Manual
-------
-
-A hosted version of the [manual](manual/) for the most recent release can be found [here][5].
-
-Repository Overview
--------------------
-
-  * `include` and `src`: C and ASM source code of seL4
-  * `tools`: build tools
-  * `libsel4`: C bindings for the seL4 ABI
-  * `manual`: LaTeX sources of the seL4 reference manual
-
-
-Build Instructions
-------------------
-
-See the seL4 website for [build instructions][6].
-
-License
-=======
-
-The files in this repository are released under standard open source
-licenses, identified by [SPDX license tags][7]. Generally, kernel-level
-code is licensed under GPLv2 and user-level code under the 2-clause BSD
-license. See the individual file headers for details, or use one of the
-publicly available SPDX tools to generate a bill of materials. The
-directory `LICENSES` contains the text for all licenses that are
-mentioned by files in this repository.
-
-### GPL syscall note
-Note that, as in the [Linux syscall note for the GPL][8], the seL4
-kernel GPL license does *not* cover user-level code that uses kernel
-services by normal system calls - this is merely considered normal use
-of the kernel, and does *not* fall under the heading of "derived work".
-Syscall headers are provided under BSD.
-
-[7]: https://spdx.org
-[8]: https://spdx.org/licenses/Linux-syscall-note.html
+So what have I learned?
+    - seL4 kernel is thin. The way it is written is interesting, much simpler than Linux.
+    - The way they organize the repos are simply broken. They need to post more links within the repo itself.
+    - There are many "internal infrastructures" within the project, e.g., the way library is written.
+      It takes time to pick up such project because you generally need to understand these first.
+    - How seL4 performs? They have a web:https://sel4.systems/About/Performance/.
+      So around 1200 cycles to do an IPC for a Skylake CPU @3.4GHz. Still room for improvement.
+      The fastest, of couse, is using cache coherence traffict, like ffwd, which can do one-way in 50 cycles.
+      Skybridge used VMfunc to speedup. IPC is always the thing for microkernel :)
+    - I'm getting interested in formal verification.
