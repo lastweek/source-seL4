@@ -17,13 +17,16 @@ The repo seems really small, I spent ~20min went though the repo, took a brief r
 It's a microkernel, so most of the stuff runs in userspace.
 
 Doc:
+
     - https://docs.sel4.systems/projects/user_libs/.
     - https://docs.sel4.systems/UserlandComponents
 Code:
+
     - https://github.com/seL4/util_libs
     - https://github.com/seL4/seL4_libs
 
 So what have I learned?
+
     - seL4 kernel is thin. The way it is written is interesting, much simpler than Linux.
     - The way they organize the repos are simply broken. They need to post more links within the repo itself.
     - There are many "internal infrastructures" within the project, e.g., the way library is written.
